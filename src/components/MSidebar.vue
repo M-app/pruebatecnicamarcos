@@ -1,5 +1,11 @@
 <template>
   <div class="scroll_panel p-3">
+    <div class="text-2xl font-bold title mb-2">BUSCAR PRODUCTOS</div>
+    <span @click="openInfo" class="p-input-icon-left mb-4" style="cursor: pointer;">
+        <i class="pi pi-search" />
+        <InputText @update:modelValue="setSearch($event)" placeholder="No controlador" class="mr-2" />
+        <i class="pi pi-megaphone"/>
+    </span>
     <div class="text-2xl font-bold title mb-2">CATEGORIAS</div>
     <div v-for="(item, index) of categorias" :key="item" class="flex align-items-center justify-content-between mb-1">
       <label>{{ item }}</label>
@@ -11,8 +17,10 @@
 <script setup lang="ts">
 import {onMounted, ref, watch, computed} from "vue";
 import {useCategories} from "../hooks/useCategories";
+import {useSearch} from "../hooks/useSearch";
 import {useStore} from "vuex";
 const { loadAllCategories, setCurrentCategory } = useCategories()
+const { setSearch } = useSearch();
 const store = useStore();
 
 const categorias = ref<Array<any>>([]);
@@ -22,6 +30,10 @@ const categoriasState = computed(() => store.state.categoriaActual)
 onMounted(async () => {
   categorias.value = await loadAllCategories();
 })
+
+const openInfo = () => {
+  window.open("https://github.com/keikaavousi/fake-store-api/blob/master/controller/product.js", "_blank");
+}
 const onUpdateCategory = (cat) => {
   setCurrentCategory(cat)
 }

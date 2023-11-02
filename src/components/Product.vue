@@ -11,10 +11,11 @@
         </div>
         <div class="flex justify-content-center mb-3">
           <div class="text-1xl">{{ product.title }}</div>
+          <!--              <Rating :modelValue="slotProps.data.rating" readonly :cancel="false"></Rating>-->
         </div>
         <div class="flex align-items-center justify-content-between">
           <span class="text-1xl font-semibold">$ {{ product.price }}</span>
-          <Button icon="pi pi-shopping-cart" rounded></Button>
+          <Button @click="onAddToCart" icon="pi pi-shopping-cart" rounded></Button>
         </div>
       </div>
     </div>
@@ -22,10 +23,17 @@
 </template>
 
 <script lang="ts" setup>
-import {useRouter} from "vue-router";
+import {useCart} from "../hooks/useCart";
 import {defineProps} from "vue";
-
 const props = defineProps(['product'])
+
+const { addProductoCart, updateProductoCart } = useCart();
+
+const onAddToCart = () => {
+  const copyProduct = JSON.parse(JSON.stringify(props.product));
+  copyProduct.qty = 1
+  addProductoCart(copyProduct)
+}
 </script>
 
 <style scoped>

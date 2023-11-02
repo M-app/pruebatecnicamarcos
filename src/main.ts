@@ -10,6 +10,8 @@ import ScrollPanel from "primevue/scrollpanel"
 import DataView from "primevue/dataview"
 import RadioButton from "primevue/radiobutton";
 import Skeleton from "primevue/skeleton";
+import InputText from "primevue/inputtext";
+import Sidebar from "primevue/sidebar";
 import App from './App.vue'
 import router from "./router";
 import store from "./store";
@@ -23,5 +25,7 @@ app.component('ScrollPanel', ScrollPanel);
 app.component('DataView', DataView);
 app.component('RadioButton', RadioButton);
 app.component('Skeleton', Skeleton);
+app.component('InputText', InputText);
+app.component('Sidebar', Sidebar)
 app.mount('#app')
 

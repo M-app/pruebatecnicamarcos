@@ -1,15 +1,19 @@
 <template>
   <div>
+    <Sidebar v-model:visible="mostrarCarrito" position="right" style="width: 500px">
+      <span class="text-4xl">Carrito</span>
+      <Cart/>
+    </Sidebar>
     <Toolbar
         class="toolbar">
       <template #start>
         start
       </template>
       <template #center>
-        {{ store.state }}
+       // h
       </template>
       <template #end>
-        end
+        <Button icon="pi pi-shopping-cart" @click="mostrarCarrito = !mostrarCarrito" :badge="cartProductos.length" />
       </template>
     </Toolbar>
     <div class="main_content">
@@ -22,9 +26,12 @@
 </template>
 
 <script lang="ts" setup>
-import { useStore } from "vuex";
-import Categorias from "../components/Categorias.vue";
-const store = useStore();
+import { ref } from 'vue';
+import {useCart} from "../hooks/useCart";
+import Categorias from "../components/MSidebar.vue";
+import Cart from "../components/Cart.vue"
+const { cartProductos } = useCart();
+const mostrarCarrito = ref(false);
 </script>
 
 <style scoped>
@@ -41,5 +48,8 @@ const store = useStore();
 }
 .content {
   width: 100%;
+}
+.cart-sidebar {
+  width: 400px;
 }
 </style>
