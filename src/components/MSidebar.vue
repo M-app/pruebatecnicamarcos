@@ -1,10 +1,9 @@
 <template>
   <div class="scroll_panel p-3">
     <div class="text-2xl font-bold title mb-2">BUSCAR PRODUCTOS</div>
-    <span @click="openInfo" class="p-input-icon-left mb-4" style="cursor: pointer;">
+    <span class="p-input-icon-left mb-4" style="cursor: pointer;">
         <i class="pi pi-search" />
-        <InputText @update:modelValue="setSearch($event)" placeholder="No controlador" class="mr-2" />
-        <i class="pi pi-megaphone"/>
+        <InputText @update:modelValue="setSearch($event)" placeholder="Buscar producto" class="mr-2" />
     </span>
     <div class="text-2xl font-bold title mb-2">CATEGORIAS</div>
     <div v-for="(item, index) of categorias" :key="item" class="flex align-items-center justify-content-between mb-1">
@@ -31,9 +30,6 @@ onMounted(async () => {
   categorias.value = await loadAllCategories();
 })
 
-const openInfo = () => {
-  window.open("https://github.com/keikaavousi/fake-store-api/blob/master/controller/product.js", "_blank");
-}
 const onUpdateCategory = (cat) => {
   setCurrentCategory(cat)
 }

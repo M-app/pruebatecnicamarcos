@@ -5,7 +5,7 @@
       <span v-else class="text-6xl uppercase font-light mr-4">all products</span>
       <i v-if="currentCategoria" class="pi pi-times icon-close" @click="resetCurrentCategory" ></i>
     </div>
-    <DataView class="test" :value="isLoading ? [{},{},{},{}] : products" layout="grid">
+    <DataView class="test" :value="isLoading ? [{},{},{},{}] : filteredProducts && filteredProducts.length > 0 ? filteredProducts : displayProducts" layout="grid">
       <template #grid="slotProps">
         <ProductSkeleton v-if="isLoading"/>
         <Product v-if="!isLoading" :product="slotProps.data"/>
@@ -26,41 +26,26 @@ const { resetCurrentCategory, currentCategoria } = useCategories();
 const { isLoading, setLoading } = useLoading();
 const { searchText } = useSearch();
 import {useLoading} from "../hooks/useLoading";
-const products = ref<Array<any>>([])
+const filteredProducts = computed(() => {
+  if (searchText.value && searchText.value.length > 0) {
+    return displayProducts.value.filter(el => {
+     return el.title.toLowerCase().includes(searchText.value.toLowerCase())
+    })
+  } else {
+    return []
+  }
+})
+const displayProducts = ref<Array<any>>([])
 onMounted(async () => {
-  products.value = await loadAllProducts();
-})
-watch(searchText, async (newVal) => {
-  try {
-    setLoading(true)
-    // https://github.com/keikaavousi/fake-store-api/blob/master/controller/product.js
-  } catch (e) {
-    console.log("e: ", e)
-  } finally {
-    setLoading(false)
-  }
+  displayProducts.value = await loadAllProducts();
 })
 watch(currentCategoria, async (newVal) => {
   try {
     setLoading(true)
     if (newVal) {
-      products.value = await getProductsByCategory(newVal);
+      displayProducts.value = await getProductsByCategory(newVal);
     } else {
-      products.value = await loadAllProducts();
-    }
-  } catch (e) {
-    console.log("e: ", e)
-  } finally {
-    setLoading(false)
-  }
-})
-watch(currentCategoria, async (newVal) => {
-  try {
-    setLoading(true)
-    if (newVal) {
-      products.value = await getProductsByCategory(newVal);
-    } else {
-      products.value = await loadAllProducts();
+      displayProducts.value = await loadAllProducts();
     }
   } catch (e) {
     console.log("e: ", e)
